@@ -1,0 +1,180 @@
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine's Day Special</title>
+    <style>
+        :root {
+            --primary-red: #ff3b3b;
+            --soft-pink: #ff99cc;
+            --gold: #ffd700;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #fff0f5 0%, #ffe4e1 100%);
+            font-family: 'Helvetica Neue', sans-serif;
+            text-align: center;
+        }
+
+        .container {
+            position: relative;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+
+        .heart-container {
+            position: relative;
+            margin: 2rem auto;
+        }
+
+        .beating-heart {
+            font-size: 8rem;
+            color: var(--primary-red);
+            animation: heartbeat 1.2s infinite;
+            text-shadow: 0 0 20px rgba(255, 59, 59, 0.3);
+        }
+
+        .flower {
+            position: absolute;
+            top: 20%;
+            right: -20%;
+            font-size: 3rem;
+            color: var(--soft-pink);
+            animation: flowerFloat 3s ease-in-out infinite;
+        }
+
+        .message-box {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin: 2rem 0;
+            max-width: 500px;
+        }
+
+        .buttons-container {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 2rem 0;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: var(--primary-red);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: var(--soft-pink);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .love-letter {
+            display: none;
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem auto;
+            max-width: 600px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .video-container {
+            margin: 2rem 0;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            15% { transform: scale(1.3); }
+            30% { transform: scale(1); }
+            45% { transform: scale(1.15); }
+            60% { transform: scale(1); }
+        }
+
+        @keyframes flowerFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="heart-container">
+            <div class="beating-heart">❤️</div>
+            <div class="flower">🌸</div>
+        </div>
+
+        <div class="message-box">
+            <h1>Will You Be My Valentine?</h1>
+            <p>You make every moment special. Let's create more memories together! 💖</p>
+        </div>
+
+        <div class="buttons-container">
+            <button class="btn" onclick="showResponse('yes')">Absolutely Yes!</button>
+            <button class="btn btn-secondary" onclick="showResponse('no')" 
+                    onmouseover="moveButton(this)">NO! NO! NO!😈😈</button>
+            <button class="btn" onclick="toggleLoveLetter()">Open Love Letter</button>
+        </div>
+
+        <div class="love-letter" id="loveLetter">
+            <h2>My Dearest Valentine,</h2>
+            <p>From the moment I laid my eyes on you, you've brought endless joy to my life. Your smile lights up my world, and your kindness touches my heart in ways I never imagined possible...</p>
+            <p>Will you do me the honor of being my Valentine?</p>
+            <p>Forever Yours,<br>Andrei Ruizol</p>
+        </div>
+
+        <div class="video-container">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/kGDRoPlSbwA" 
+                    frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <script>
+        function showResponse(response) {
+            if(response === 'yes') {
+                alert("🎉 YESYESYES! YIPPEEE! You've made this Valentine's Day perfect! 💌");
+            } else {
+                alert("😢 I'll keep hoping... Refresh the page if you change your mind!");
+            }
+        }
+
+        function moveButton(btn) {
+            btn.style.transform = `translate(${Math.random() * 50 - 25}px, ${Math.random() * 50 - 25}px)`;
+        }
+
+        function toggleLoveLetter() {
+            const letter = document.getElementById('loveLetter');
+            letter.style.display = letter.style.display === 'none' ? 'block' : 'none';
+            window.scrollTo({
+                top: letter.offsetTop - 100,
+                behavior: 'smooth'
+            });
+        }
+
+        // Responsive video handling
+        window.addEventListener('resize', () => {
+            const video = document.querySelector('iframe');
+            video.style.width = Math.min(window.innerWidth - 40, 560) + 'px';
+            video.style.height = (video.offsetWidth * 0.5625) + 'px';
+        });
+        window.dispatchEvent(new Event('resize'));
+    </script>
+</body>
+</html>
