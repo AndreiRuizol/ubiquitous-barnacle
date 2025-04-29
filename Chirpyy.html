@@ -86,6 +86,22 @@
             filter: brightness(1.1);
         }
 
+        /* ===== Message Box ===== */
+        .message {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem auto;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            max-width: 600px;
+            display: none;
+        }
+
+        .message p {
+            margin: 0 0 1.5rem 0;
+            line-height: 1.6;
+        }
+
         /* ===== YouTube Embed ===== */
         .youtube-embed {
             margin: 2rem 0;
@@ -101,17 +117,6 @@
             box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
 
-        /* ===== Message Box ===== */
-        .message {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 2rem;
-            border-radius: 15px;
-            margin: 2rem auto;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            max-width: 600px;
-            display: none;
-        }
-
         /* ===== Balloon Styles ===== */
         .balloon {
             position: absolute;
@@ -123,6 +128,29 @@
             transform-origin: bottom center;
             filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.2));
             z-index: -1;
+        }
+
+        .balloon::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            width: 2px;
+            height: 40px;
+            background: rgba(0,0,0,0.2);
+            transform: translateX(-50%);
+        }
+
+        .balloon::before {
+            content: '';
+            position: absolute;
+            bottom: -45px;
+            left: 50%;
+            width: 10px;
+            height: 10px;
+            background: rgba(0,0,0,0.1);
+            border-radius: 50%;
+            transform: translateX(-50%);
         }
 
         @keyframes float {
@@ -154,23 +182,27 @@
         
         <div class="button-group">
             <button class="toggle-btn" onclick="toggleMessage()">Show Message</button>
-            <!-- GIF Embed (cleaned up) -->
+            
+            <!-- Tenor GIF Embed -->
             <div class="tenor-gif-embed" data-postid="7935144640471707564" data-share-method="host" data-aspect-ratio="1.01852" data-width="15%"></div>
             <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
-
-            <!-- YouTube Embed -->
-            <div class="youtube-embed">
-                <iframe 
-                    src="https://www.youtube.com/embed/NLphEFOyoqM?autoplay=1&controls=0" 
-                    title="Birthday Video" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                </iframe>
-            </div>
         </div>
 
+        <!-- Message Box (now above YouTube embed) -->
         <div class="message">
             <p>HIHIHIHI Chirpyy!! Happy Birthday! I know you hate reading my long ass messages so I'll just keep this one short just for you alright? I know we met not long ago and we've been good friends for quite some time now, and I just want to say that, I want to do this much just for you. Please don't be so harsh on yourself alright?</p>
             <button class="surprise-btn" onclick="showSurprise()">Click for Surprise!</button>
+        </div>
+
+        <!-- YouTube Video Embed (moved below message) -->
+        <div class="youtube-embed">
+            <iframe 
+                src="https://www.youtube.com/embed/NLphEFOyoqM" 
+                title="Birthday Video" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+            </iframe>
         </div>
 
         <div id="balloon-container"></div>
@@ -208,10 +240,10 @@
 
         // ===== Surprise Handler =====
         function showSurprise() {
-            alert("It'll be May tomorrow, I was thinking that since It's May. May we still continue to talk?");
+            alert("It will be May tomorrow, I was thinking that since It is May. May we still continue to talk?");
         }
 
-        // Initialize balloons on load
+        // Initialize on load
         window.onload = createBalloons;
     </script>
 </body>
