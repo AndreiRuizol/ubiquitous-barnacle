@@ -1,0 +1,292 @@
+	<!DOCTYPE html>
+	<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Happy Birthday! 🎂</title>
+		<style>
+			/* ===== Base Styles ===== */
+			:root {
+				--primary-color: #ff6b6b;
+				--secondary-color: #4ecdc4;
+				--accent-color: #ffd700;
+			}
+
+			body {
+				margin: 0;
+				height: 100vh; /* Use height instead of min-height */
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				background: linear-gradient(45deg, var(--primary-color), var(--secondary-color)) fixed; /* Added fixed */
+				font-family: 'Comic Sans MS', cursive;
+				overflow: hidden; /* Prevent scrolling by default */
+				width: 100%;
+			}
+
+			/* ===== Container Styles ===== */
+			.container {
+				text-align: center;
+				padding: 2rem;
+				position: relative;
+				width: 100%;
+				box-sizing: border-box;
+				margin: 0 auto;
+				max-height: 100vh;
+				overflow-y: auto; /* Allow scrolling within container if needed */
+				scrollbar-width: none; /* Firefox */
+				-ms-overflow-style: none; /* IE and Edge */
+			}
+			
+			/* Hide scrollbar for Chrome, Safari and Opera */
+			.container::-webkit-scrollbar {
+				display: none;
+			}
+
+			/* ===== Typography ===== */
+			h1 {
+				font-size: clamp(2rem, 5vw, 3rem);
+				color: #fff;
+				text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+				animation: bounce 2s infinite;
+				margin: 0 0 2rem 0;
+			}
+
+			/* ===== Interactive Elements ===== */
+			.button-group {
+				display: flex;
+				flex-direction: column;
+				gap: 1rem;
+				align-items: center;
+				margin: 2rem 0;
+			}
+
+			button {
+				padding: 15px 30px;
+				font-size: 1.1rem;
+				border: none;
+				border-radius: 25px;
+				cursor: pointer;
+				transition: all 0.3s ease;
+				width: fit-content;
+			}
+
+			.toggle-btn {
+				background: var(--primary-color);
+				color: white;
+			}
+
+			.surprise-btn {
+				background: var(--accent-color);
+				color: #333;
+			}
+
+			button:hover {
+				transform: scale(1.05);
+				filter: brightness(1.1);
+			}
+
+			/* ===== Cake Styles ===== */
+			.cake {
+				width: min(200px, 90%);
+				height: auto;
+				cursor: pointer;
+				transition: transform 0.3s;
+				margin: 2rem auto;
+				display: block;
+			}
+
+			.cake:hover {
+				transform: scale(1.1);
+			}
+
+			/* ===== Message Box ===== */
+			.message {
+				background: rgba(255, 255, 255, 0.9);
+				padding: 2rem;
+				border-radius: 15px;
+				margin: 2rem auto;
+				box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+				max-width: 600px;
+				display: none;
+			}
+
+			.message p {
+				margin: 0 0 1.5rem 0;
+				line-height: 1.6;
+			}
+
+			/* ===== Balloon Styles ===== */
+			.balloon {
+				position: absolute;
+				width: 80px;
+				height: 100px;
+				border-radius: 80% 80% 70% 70%;
+				animation: float 8s ease-in infinite;
+				opacity: 0;
+				transform-origin: bottom center;
+				filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.2));
+				z-index: -1;
+			}
+
+			.balloon::after {
+				content: '';
+				position: absolute;
+				bottom: -15px;
+				left: 50%;
+				width: 2px;
+				height: 40px;
+				background: rgba(0,0,0,0.2);
+				transform: translateX(-50%);
+			}
+
+			.balloon::before {
+				content: '';
+				position: absolute;
+				bottom: -45px;
+				left: 50%;
+				width: 10px;
+				height: 10px;
+				background: rgba(0,0,0,0.1);
+				border-radius: 50%;
+				transform: translateX(-50%);
+			}
+
+			@keyframes float {
+				0% {
+					transform: translateY(110vh) rotateZ(-5deg);
+					opacity: 0;
+				}
+				10% {
+					opacity: 1;
+				}
+				50% {
+					transform: translateY(-10vh) rotateZ(5deg);
+				}
+				100% {
+					transform: translateY(-100vh) rotateZ(5deg);
+					opacity: 0.5;
+				}
+			}
+
+			/* Prevent scrolling when message is open */
+			.no-scroll {
+				overflow: hidden;
+			}
+
+			@keyframes bounce {
+				0%, 100% { transform: translateY(0); }
+				50% { transform: translateY(-20px); }
+			}
+			
+			/* Make sure html takes full height */
+			html {
+				height: 100%;
+				width: 100%;
+				margin: 0;
+				padding: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<h1>Happy Birthday, <span id="name">Chirpy</span>!! </h1>
+			
+			<div class="button-group">
+				<button class="toggle-btn" onclick="toggleMessage()">Show Message</button>
+				<div class="tenor-gif-embed" data-postid="7935144640471707564" data-share-method="host" data-aspect-ratio="1.01852" data-width="15%">
+		<a href="https://tenor.com/view/birthday-cake-mochi-mochi-peach-cat-gif-7935144640471707564">Birthday Cake Sticker</a> from 
+		<a href="https://tenor.com/search/birthday-stickers">Birthday Stickers</a>
+	</div> 
+	<script type="text/javascript" async src="https://tenor.com/embed.js"></script>
+			</div>
+
+			<div class="message">
+				<p>HIHIHIHI Chirpyy!! Happy Birthday! I know you hate reading my long ass messages so I'll just keep this one short just for you alright? I know we met not long ago and we've been good friends for quite some time now, and I just want to say that, I want to do this much just for you. Please don't be so harsh on yourself alright?  </p>
+				<button class="surprise-btn" onclick="showSurprise()">Click for Surprise!</button>
+			</div>
+
+			<div id="balloon-container"></div>
+		</div>
+
+		<script>
+			// ===== Balloon Generation =====
+			function createBalloons() {
+				const balloonContainer = document.getElementById('balloon-container');
+				const colors = [
+					'radial-gradient(circle at 30% 30%, #ff638f, #ff1a1a)',
+					'radial-gradient(circle at 30% 30%, #7bed9f, #2ed573)',
+					'radial-gradient(circle at 30% 30%, #70a1ff, #1e90ff)',
+					'radial-gradient(circle at 30% 30%, #ffd700, #ffa502)',
+					'radial-gradient(circle at 30% 30%, #ff7f50, #ff6348)'
+				];
+
+				const shapes = ['oval', 'round', 'heart'];
+				
+				for (let i = 0; i < 25; i++) {
+					const balloon = document.createElement('div');
+					balloon.className = 'balloon';
+					
+					const size = Math.random() * 0.5 + 0.7;
+					const color = colors[Math.floor(Math.random() * colors.length)];
+					const shape = shapes[Math.floor(Math.random() * shapes.length)];
+					const delay = Math.random() * 8;
+					const duration = 6 + Math.random() * 4;
+					const sway = Math.random() * 20 - 10;
+
+					balloon.style.cssText = `
+						width: ${size * 80}px;
+						height: ${size * 100}px;
+						background: ${color};
+						animation-delay: ${delay}s;
+						animation-duration: ${duration}s;
+						left: ${Math.random() * 100}%;
+						transform: translateX(${sway}px);
+					`;
+
+					if (shape === 'heart') {
+						balloon.style.borderRadius = '50% 50% 40% 40%';
+						balloon.style.transform += ' rotate(45deg)';
+					} else if (shape === 'round') {
+						balloon.style.width = `${size * 100}px`;
+						balloon.style.height = `${size * 100}px`;
+					}
+
+					balloonContainer.appendChild(balloon);
+				}
+			}
+
+			// ===== Message Toggle =====
+			function toggleMessage() {
+				const message = document.querySelector('.message');
+				const toggleBtn = document.querySelector('.toggle-btn');
+				const isHidden = message.style.display === 'none' || !message.style.display;
+				
+				// Toggle message visibility
+				message.style.display = isHidden ? 'block' : 'none';
+				
+				// Update button text
+				toggleBtn.textContent = isHidden ? '🎉 Hide Message' : 'Show Message';
+			}
+
+			// ===== Cake Interaction =====
+			function lightCandles() {
+				const cake = document.querySelector('.cake');
+				cake.style.filter = 'drop-shadow(0 0 15px gold)';
+				setTimeout(() => cake.style.filter = '', 1000);
+				new Audio('https://assets.mixkit.co/active_storage/sfx/2570/2570-preview.mp3').play();
+			}
+
+			// ===== Surprise Handler =====
+			function showSurprise() {
+				alert('It'll be May tommorow, I was thinking that since It's May. May we still continue to talk?');
+			}
+
+			// ===== Initialization =====
+			window.onload = () => {
+				createBalloons();
+			};
+		</script>
+	</body>
+	</html>
