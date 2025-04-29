@@ -104,11 +104,9 @@
 
         /* ===== YouTube Embed ===== */
         .youtube-embed {
-            margin: 2rem auto; /* Changed to auto for horizontal centering */
+            margin: 2rem 0;
             width: 100%;
             max-width: 560px;
-            display: flex;
-            justify-content: center; /* Center the iframe horizontally */
         }
 
         .youtube-embed iframe {
@@ -190,20 +188,20 @@
             <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
         </div>
 
-        <!-- Message Box -->
+        <!-- Message Box (now above YouTube embed) -->
         <div class="message">
             <p>HIHIHIHI Chirpyy!! Happy Birthday! I know you hate reading my long ass messages so I'll just keep this one short just for you alright? I know we met not long ago and we've been good friends for quite some time now, and I just want to say that, I want to do this much just for you. Please don't be so harsh on yourself alright?</p>
             <button class="surprise-btn" onclick="showSurprise()">Click for Surprise!</button>
         </div>
 
-        <!-- Centered YouTube Video Embed -->
+        <!-- YouTube Video Embed (moved below message) -->
         <div class="youtube-embed">
             <iframe 
                 src="https://www.youtube.com/embed/NLphEFOyoqM" 
                 title="Birthday Video" 
-                frameborder="0"
-				autoplay="0"
-                allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
             </iframe>
         </div>
 
