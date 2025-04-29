@@ -104,9 +104,11 @@
 
         /* ===== YouTube Embed ===== */
         .youtube-embed {
-            margin: 2rem 0;
+            margin: 2rem auto; /* Changed to auto for horizontal centering */
             width: 100%;
             max-width: 560px;
+            display: flex;
+            justify-content: center; /* Center the iframe horizontally */
         }
 
         .youtube-embed iframe {
@@ -188,20 +190,20 @@
             <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
         </div>
 
-        <!-- Message Box (now above YouTube embed) -->
+        <!-- Message Box -->
         <div class="message">
             <p>HIHIHIHI Chirpyy!! Happy Birthday! I know you hate reading my long ass messages so I'll just keep this one short just for you alright? I know we met not long ago and we've been good friends for quite some time now, and I just want to say that, I want to do this much just for you. Please don't be so harsh on yourself alright?</p>
             <button class="surprise-btn" onclick="showSurprise()">Click for Surprise!</button>
         </div>
 
-        <!-- YouTube Video Embed (moved below message) -->
+        <!-- Centered YouTube Video Embed -->
         <div class="youtube-embed">
             <iframe 
                 src="https://www.youtube.com/embed/NLphEFOyoqM" 
                 title="Birthday Video" 
-                frameborder="0" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                allowfullscreen>
+                frameborder="0"
+				autoplay="0"
+                allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
             </iframe>
         </div>
 
@@ -240,7 +242,7 @@
 
         // ===== Surprise Handler =====
         function showSurprise() {
-            alert("It will be May tomorrow, I was thinking that since It is May. May we still continue to talk?");
+            alert("It'll be May tomorrow, I was thinking that since It's May. May we still continue to talk?");
         }
 
         // Initialize on load
