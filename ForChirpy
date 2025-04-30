@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes For Chirpyy</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 20px;
+            background-color: #ffeb3b;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            position: relative;
+            z-index: 2;
+        }
+        
+        .notes-area {
+            position: relative;
+            min-height: calc(100vh - 160px);
+            margin-top: -20px;
+            padding-top: 20px;
+        }
+        
+        .note-card {
+            position: absolute;
+            min-width: 200px;
+            max-width: 300px;
+            padding: 15px;
+            box-shadow: 3px 3px 10px rgba(0,0,0,0.3);
+            cursor: pointer;
+            transition: all 0.3s;
+            transform-origin: center;
+            word-wrap: break-word;
+        }
+        
+        .note-card:hover {
+            transform: scale(1.05) rotate(2deg);
+            z-index: 10;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.4);
+        }
+        
+        .note-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+            border-bottom: 1px dashed #000;
+            padding-bottom: 5px;
+        }
+        
+        .note-content {
+            font-size: 14px;
+            white-space: pre-line;
+        }
+        
+        /* Different colored notes */
+        .note-yellow { background-color: #fff9c4; }
+        .note-pink { background-color: #ffcdd2; }
+        .note-blue { background-color: #bbdefb; }
+        .note-green { background-color: #c8e6c9; }
+        .note-purple { background-color: #e1bee7; }
+        .note-orange { background-color: #ffe0b2; }
+        .note-teal { background-color: #b2dfdb; }
+        
+        /* Fixed note indicator */
+        .fixed-indicator {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            font-size: 12px;
+            color: #666;
+        }
+        
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.3);
+            position: relative;
+            max-height: 80vh;
+            overflow-y: auto;
+            animation: modalAppear 0.3s ease-out;
+        }
+        
+        .fixed-modal .modal-body {
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        
+        @keyframes modalAppear {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 28px;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        .modal-title {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #333;
+            padding-right: 30px;
+        }
+        
+        .modal-body {
+            color: #444;
+            line-height: 1.6;
+            white-space: pre-line;
+        }
+        
+        .add-note-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #ff5722;
+            color: white;
+            font-size: 30px;
+            border: none;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+            cursor: pointer;
+            z-index: 5;
+        }
+        
+        .add-note-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        /* Delete button style */
+        .delete-btn {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            padding: 5px 10px;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            display: none;
+        }
+        
+        .delete-btn:hover {
+            background-color: #d32f2f;
+        }
+        
+        /* Status message */
+        .status-message {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            padding: 10px 15px;
+            background-color: #4caf50;
+            color: white;
+            border-radius: 4px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Notes For Chirpyy</h1>
+        <p>I hope you like this little website of mine <3</p>
+    </div>
+    
+    <div class="notes-area" id="notesArea"></div>
+    
+    <!-- Modal for viewing notes -->
+    <div class="modal" id="noteModal">
+        <div class="modal-content" id="modalContent">
+            <span class="close-btn" id="closeModal">&times;</span>
+            <h2 class="modal-title" id="modalTitle" contenteditable="false"></h2>
+            <div class="modal-body" id="modalBody"></div>
+            <button class="delete-btn" id="deleteNoteBtn">Delete Note</button>
+        </div>
+    </div>
+    
+    <button class="add-note-btn" id="addNoteBtn">+</button>
+    
+    <div class="status-message" id="statusMessage"></div>
+    
+    <script>
+        // Fixed 7 notes (cannot be edited or deleted)
+        const fixedNotes = [
+            {
+                id: 1,
+                title: "ChirpChirp",
+                content: "Hey Chirpyy!!, just wanted to share this website with you. I hope everything’s going well on your side, I always appreciate having you around. Take care and talk soon!",
+                date: "Permanent",
+                color: "note-yellow"
+            },
+            {
+                id: 2,
+                title: "From Ryu",
+                content: "To Chirpy. You have this way of bringing a sense of ease to the moment, even without trying. Or maybe it's just me who noticed. Like how you make things feel calmer and brighter, just by being yourself",
+                date: "Permanent",
+                color: "note-pink"
+            },
+            {
+                id: 3,
+                title: "okay BRO",
+                content: "Okay just so you know, you're not getting rid of me that easily aight? I'm like Wi-Fi signal, you might try moving to the farthest area of the room, but I'll still be here. Go ahead , test my patience. (Don't really or I cry😢)",
+                date: "Permanent",
+                color: "note-blue"
+            },
+            {
+                id: 4,
+                title: "HEYY Chirpy",
+                content: "I want to let you know how much I enjoy talking with you even if we just message each other on social medias. I really find your humor funny even though I sometimes wouldn't understand them.",
+                date: "Permanent",
+                color: "note-green"
+            },
+            {
+                id: 5,
+                title: "SuperChirpy",
+                content: "Here's the thing, you're an incredible person (like superman aight), and people like you make the world a bit brighter (maybe for me, don't talk to them if they don't notice it, yes)",
+                date: "Permanent",
+                color: "note-purple"
+            },
+            {
+                id: 6,
+                title: "Real",
+                content: "And no worries, I'm not here to crowd your space, I'm just sticking around because I genuniely admire who you are (No hidden meaning, real).",
+                date: "Permanent",
+                color: "note-orange"
+            },
+            {
+                id: 7,
+                title: "That's tuff bro",
+                content: "Heyheyhey Chirpy! I want to remind you that it's perfectly fine to have tough days okay? No need to be all tough and endure the pain. Make sure to rest also on times that you feel tired of being strong. Cause you know, sometimes life feels overwhelming. But of course, I know you could get through this, because you're you. I have put my trust in you that you'll face every problem with a smile. So, take your time to rest. No need to rush things okay?",
+                date: "Permanent",
+                color: "note-teal"
+            }
+        ];
+        
+        // User-added notes (can be edited)
+        let userNotes = [];
+        
+        // Colors for user-added notes
+        const colors = ['note-yellow', 'note-pink', 'note-blue', 'note-green', 'note-purple', 'note-orange', 'note-teal'];
+        
+        // Get DOM elements
+        const notesArea = document.getElementById('notesArea');
+        const noteModal = document.getElementById('noteModal');
+        const modalContent = document.getElementById('modalContent');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalBody = document.getElementById('modalBody');
+        const closeModal = document.getElementById('closeModal');
+        const addNoteBtn = document.getElementById('addNoteBtn');
+        const deleteNoteBtn = document.getElementById('deleteNoteBtn');
+        const header = document.querySelector('.header');
+        const statusMessage = document.getElementById('statusMessage');
+        
+        // Current note being edited (for delete functionality)
+        let currentNote = null;
+        let isCurrentNoteFixed = true;
+        
+        // Check for localStorage support
+        function isLocalStorageAvailable() {
+            try {
+                const test = 'test';
+                localStorage.setItem(test, test);
+                localStorage.removeItem(test);
+                return true;
+            } catch(e) {
+                return false;
+            }
+        }
+        
+        // Show status message
+        function showStatus(message, isError = false) {
+            statusMessage.textContent = message;
+            statusMessage.style.backgroundColor = isError ? '#f44336' : '#4caf50';
+            statusMessage.style.opacity = '1';
+            
+            setTimeout(() => {
+                statusMessage.style.opacity = '0';
+            }, 3000);
+        }
+        
+        // Save notes to localStorage
+        function saveNotesToLocalStorage() {
+            if (isLocalStorageAvailable()) {
+                try {
+                    // Save user notes
+                    localStorage.setItem('userNotes', JSON.stringify(userNotes));
+                    return true;
+                } catch (e) {
+                    console.error('Error saving to localStorage:', e);
+                    return false;
+                }
+            }
+            return false;
+        }
+        
+        // Load notes from localStorage
+        function loadNotesFromLocalStorage() {
+            if (isLocalStorageAvailable()) {
+                try {
+                    // Load user notes
+                    const savedUserNotes = localStorage.getItem('userNotes');
+                    if (savedUserNotes) {
+                        userNotes = JSON.parse(savedUserNotes);
+                    }
+                    return true;
+                } catch (e) {
+                    console.error('Error loading from localStorage:', e);
+                    return false;
+                }
+            }
+            return false;
+        }
+        
+        // Calculate header height for positioning
+        function getHeaderHeight() {
+            return header.offsetHeight;
+        }
+        
+        // Calculate note width based on content length
+        function calculateNoteWidth(content) {
+            const lineLengths = content.split('\n').map(line => line.length);
+            const maxLineLength = Math.max(...lineLengths);
+            
+            // Base width plus extra for longer lines
+            return Math.min(300, Math.max(200, 200 + (maxLineLength * 5)));
+        }
+        
+        // Generate random position for a note
+        function getRandomPosition(headerHeight) {
+            const availableHeight = window.innerHeight - headerHeight - 80;
+            const availableWidth = window.innerWidth - 220;
+            
+            return {
+                x: Math.max(20, Math.floor(Math.random() * availableWidth)),
+                y: Math.max(headerHeight + 20, Math.floor(Math.random() * availableHeight) + headerHeight - 20),
+                rotation: (Math.random() * 20) - 10 // Random rotation between -10 and 10 degrees
+            };
+        }
+        
+        // Display all notes with random positioning
+        function displayNotes() {
+            notesArea.innerHTML = '';
+            
+            const headerHeight = getHeaderHeight();
+            
+            // Display fixed notes with random positions
+            fixedNotes.forEach(note => {
+                const pos = getRandomPosition(headerHeight);
+                
+                const noteCard = document.createElement('div');
+                noteCard.className = `note-card ${note.color}`;
+                noteCard.style.left = `${pos.x}px`;
+                noteCard.style.top = `${pos.y}px`;
+                noteCard.style.transform = `rotate(${pos.rotation}deg)`;
+                noteCard.style.width = `${calculateNoteWidth(note.content)}px`;
+                
+                noteCard.innerHTML = `
+                    <div class="fixed-indicator">Fixed</div>
+                    <div class="note-title">${note.title}</div>
+                    <div class="note-content">${note.content}</div>
+                    <div style="font-size: 12px; color: #666; margin-top: 10px;">${note.date}</div>
+                `;
+                
+                noteCard.addEventListener('click', () => openNoteModal(note, true));
+                notesArea.appendChild(noteCard);
+            });
+            
+            // Display user notes with random positions
+            userNotes.forEach(note => {
+                const pos = getRandomPosition(headerHeight);
+                
+                const noteCard = document.createElement('div');
+                noteCard.className = `note-card ${note.color}`;
+                noteCard.style.left = `${pos.x}px`;
+                noteCard.style.top = `${pos.y}px`;
+                noteCard.style.transform = `rotate(${pos.rotation}deg)`;
+                noteCard.style.width = `${calculateNoteWidth(note.content)}px`;
+                
+                noteCard.innerHTML = `
+                    <div class="note-title">${note.title}</div>
+                    <div class="note-content">${note.content}</div>
+                    <div style="font-size: 12px; color: #666; margin-top: 10px;">${note.date}</div>
+                `;
+                
+                noteCard.addEventListener('click', () => openNoteModal(note, false));
+                notesArea.appendChild(noteCard);
+            });
+        }
+        
+        // Open note in modal
+        function openNoteModal(note, isFixed) {
+            currentNote = note;
+            isCurrentNoteFixed = isFixed;
+            
+            modalTitle.textContent = note.title;
+            modalBody.textContent = note.content;
+            
+            if (isFixed) {
+                modalContent.classList.add('fixed-modal');
+                modalBody.contentEditable = false;
+                modalTitle.contentEditable = false;
+                deleteNoteBtn.style.display = 'none';
+            } else {
+                modalContent.classList.remove('fixed-modal');
+                modalBody.contentEditable = true;
+                modalTitle.contentEditable = true;
+                deleteNoteBtn.style.display = 'block';
+            }
+            
+            noteModal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            
+            // Save changes when modal closes (only for user notes)
+            const saveChanges = () => {
+                if (!isFixed) {
+                    note.content = modalBody.textContent;
+                    note.title = modalTitle.textContent;
+                    // Save to localStorage
+                    if (saveNotesToLocalStorage()) {
+                        showStatus('Note updated successfully');
+                    }
+                }
+            };
+            
+            // Update event listeners
+            closeModal.onclick = () => {
+                saveChanges();
+                closeNoteModal();
+            };
+            
+            noteModal.onclick = (e) => {
+                if (e.target === noteModal) {
+                    saveChanges();
+                    closeNoteModal();
+                }
+            };
+        }
+        
+        // Close modal
+        function closeNoteModal() {
+            noteModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            modalContent.classList.remove('fixed-modal');
+            displayNotes(); // Refresh display after edits
+        }
+        
+        // Delete the current note
+        function deleteNote() {
+            if (currentNote && !isCurrentNoteFixed) {
+                const index = userNotes.findIndex(note => note.id === currentNote.id);
+                if (index !== -1) {
+                    userNotes.splice(index, 1);
+                    closeNoteModal();
+                    if (saveNotesToLocalStorage()) {
+                        showStatus('Note deleted successfully');
+                    }
+                    displayNotes();
+                }
+            }
+        }
+        
+        // Add new random note
+        function addRandomNote() {
+            const titles = [
+                "New Note", "Reminder", "To Do", "Ideas", 
+                "Thoughts", "Tasks", "List", "Notes"
+            ];
+            
+            const contents = [
+                "Click to edit this note",
+                "Add your content here",
+                "Type your thoughts here",
+                "This note is editable",
+                "Double click the modal to edit",
+                "Your text goes here",
+                "Replace this with your content",
+                "Edit me by clicking then typing"
+            ];
+            
+            const newNote = {
+                id: Date.now(),
+                title: titles[Math.floor(Math.random() * titles.length)],
+                content: contents[Math.floor(Math.random() * contents.length)],
+                date: new Date().toISOString().split('T')[0],
+                color: colors[Math.floor(Math.random() * colors.length)]
+            };
+            
+            userNotes.push(newNote);
+            
+            // Save to localStorage
+            if (saveNotesToLocalStorage()) {
+                showStatus('New note created');
+            }
+            
+            displayNotes();
+            
+            // Open the new note for editing
+            setTimeout(() => openNoteModal(newNote, false), 300);
+        }
+        
+        // Event listeners
+        addNoteBtn.addEventListener('click', addRandomNote);
+        deleteNoteBtn.addEventListener('click', deleteNote);
+        
+        // Reposition notes on window resize
+        window.addEventListener('resize', displayNotes);
+        
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            // First try to load notes from localStorage
+            if (loadNotesFromLocalStorage()) {
+                showStatus('Notes loaded from local storage');
+            }
+            
+            // Then display all notes with random positions
+            displayNotes();
+        });
+    </script>
+</body>
+</html>
