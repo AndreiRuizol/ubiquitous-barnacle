@@ -184,7 +184,8 @@
             flowers.forEach((flower, index) => {
                 flower.addEventListener('click', () => {
                     const tiktokUrl = flower.dataset.tiktokUrl;
-                    tiktokVideoFrame.src = tiktokUrl;
+                    // Use a different approach to embed the video.
+                    tiktokVideoFrame.src = tiktokUrl; //Directly setting the source should work
                     tiktokGui.style.display = 'block';
                 });
             });
