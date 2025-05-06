@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Bouquet</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="paper-container">
+        <div class="paper">
+            <div class="bouquet">
+                <div class="flower" data-tiktok-url="https://www.tiktok.com/@example/video1">
+                    <img src="flower1.png" alt="Flower 1">
+                </div>
+                <div class="flower" data-tiktok-url="https://www.tiktok.com/@example/video2">
+                    <img src="flower2.png" alt="Flower 2">
+                </div>
+                <div class="flower" data-tiktok-url="https://www.tiktok.com/@example/video3">
+                    <img src="flower3.png" alt="Flower 3">
+                </div>
+                </div>
+        </div>
+        <div class="tiktok-gui" id="tiktokGui">
+            <button id="closeGui">Close</button>
+            <iframe id="tiktokVideo" width="480" height="360" frameborder="0" allow="autoplay; fullscreen"></iframe>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
