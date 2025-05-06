@@ -5,28 +5,195 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interactive Bouquet</title>
     <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Dancing Script', cursive; /* More elegant font */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f5f5f5; /* Soft background color */
+            margin: 0;
+        }
+
+        .paper-container {
+            position: relative;
+            display: flex; /* Use flexbox for centering */
+            justify-content: center;
+            align-items: center;
+            width: 90%; /* Allow container to take up most of the viewport */
+            max-width: 1000px; /* But limit the max width */
+        }
+
+        .paper {
+            /* Refined paper style */
+            background-image: linear-gradient(to bottom right, #f8f0e3, #f2d7ee);
+            padding: 60px; /* Slightly reduced padding */
+            border-radius: 18px; /* More rounded corners */
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2); /* Deeper shadow */
+            position: relative;
+            overflow: hidden;
+            width: 100%; /* Paper takes full width of container */
+            text-align: center; /* Center the bouquet within the paper */
+        }
+
+        .paper::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%23000000' fill-opacity='0.1' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");
+            opacity: 0.4;
+            pointer-events: none;
+            border-radius: 18px;
+        }
+
+
+        .bouquet {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center; /* Keep flowers centered */
+            align-items: flex-start;  /* Align items to the start (top in this case)*/
+            width: 100%;
+            margin-top: 20px; /* Add space between top of paper and bouquet */
+        }
+
+        .flower {
+            cursor: pointer;
+            margin: 20px; /* Increased margin */
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Added box-shadow transition */
+        }
+
+        .flower:hover {
+            transform: scale(1.1) rotate(-3deg); /* Slightly rotate on hover */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Add shadow on hover */
+            z-index: 1; /* Bring hovered flower to front */
+        }
+
+        .flower img {
+            width: 150px; /* Increased flower size */
+            height: auto;
+            display: block;
+            border-radius: 10px; /* Give flower images rounded corners */
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for images */
+        }
+
+        .tiktok-gui {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 255, 255, 0.95); /* Slightly transparent white */
+            padding: 30px;
+            border-radius: 18px; /* Match paper radius */
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3); /* More pronounced shadow */
+            z-index: 10;
+            display: none;
+            text-align: center;
+            width: 90%;
+            max-width: 700px; /* Wider GUI */
+            backdrop-filter: blur(10px); /* Add blur to background, for better text contrast*/
+        }
+
+        #closeGui {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-size: 24px; /* Larger close button */
+            color: #555;
+            transition: color 0.2s ease;
+        }
+
+        #closeGui:hover {
+            color: #222;
+        }
+
+        #tiktokVideo {
+            margin-top: 25px; /* Increased margin */
+            width: 100%;
+            height: auto;
+            aspect-ratio: 16 / 9;
+            border-radius: 8px; /* Rounded corners for video frame */
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1); /* Add shadow to video frame */
+        }
+
+        /* CSS for wrapping effect */
+        .paper {
+            transform: rotate(-3deg); /* Slightly rotate the paper */
+            padding-bottom: 70px; /* Add extra padding at the bottom to make room for the wrapped part*/
+        }
+
+        .bouquet {
+           /* Removed the absolute positioning */
+           margin-top: 40px; /* Add space between top of paper and bouquet */
+           transform: rotate(3deg); /* Counter rotate the bouquet */
+        }
+
+       .flower:nth-child(odd) {
+            transform: rotate(5deg);
+        }
+
+        .flower:nth-child(even) {
+            transform: rotate(-5deg);
+        }
+
+    </style>
 </head>
 <body>
     <div class="paper-container">
         <div class="paper">
             <div class="bouquet">
-                <div class="flower" data-tiktok-url="https://www.tiktok.com/@example/video1">
-                    <img src="flower1.png" alt="Flower 1">
+                <div class="flower" data-tiktok-url="https://www.tiktok.com/@tiktok/video/7161229297624122666">
+                    <img src="flower1.png" alt="flower1">
                 </div>
-                <div class="flower" data-tiktok-url="https://www.tiktok.com/@example/video2">
-                    <img src="flower2.png" alt="Flower 2">
+                <div class="flower" data-tiktok-url="https://www.tiktok.com/@tiktok/video/7158931535497332010">
+                    <img src="flower2.png" alt="flower2">
                 </div>
-                <div class="flower" data-tiktok-url="https://www.tiktok.com/@example/video3">
-                    <img src="flower3.png" alt="Flower 3">
+                <div class="flower" data-tiktok-url="https://www.tiktok.com/@tiktok/video/7148788724152781098">
+                    <img src="flower3.png" alt="flower3">
                 </div>
+                <div class="flower" data-tiktok-url="https://www.tiktok.com/@tiktok/video/7172286417457787178">
+                    <img src="flower4.png" alt="flower4">
                 </div>
+                 <div class="flower" data-tiktok-url="https://www.tiktok.com/@tiktok/video/7165890712891965738">
+                    <img src="flower5.png" alt="flower5">
+                </div>
+            </div>
         </div>
         <div class="tiktok-gui" id="tiktokGui">
             <button id="closeGui">Close</button>
-            <iframe id="tiktokVideo" width="480" height="360" frameborder="0" allow="autoplay; fullscreen"></iframe>
+            <iframe id="tiktokVideo"  frameborder="0" allow="autoplay; fullscreen"></iframe>
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const flowers = document.querySelectorAll('.flower');
+            const tiktokGui = document.getElementById('tiktokGui');
+            const tiktokVideoFrame = document.getElementById('tiktokVideo');
+            const closeGuiButton = document.getElementById('closeGui');
+            const bouquet = document.querySelector('.bouquet');
+
+
+            flowers.forEach((flower, index) => {
+                flower.addEventListener('click', () => {
+                    const tiktokUrl = flower.dataset.tiktokUrl;
+                    tiktokVideoFrame.src = tiktokUrl;
+                    tiktokGui.style.display = 'block';
+                });
+            });
+
+            closeGuiButton.addEventListener('click', () => {
+                tiktokGui.style.display = 'none';
+                tiktokVideoFrame.src = '';
+            });
+        });
+    </script>
 </body>
 </html>
