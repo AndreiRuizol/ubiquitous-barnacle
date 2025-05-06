@@ -5,167 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interactive Bouquet</title>
     <link rel="stylesheet" href="styles.css">
-    <style>
-      .paper {
-        background-image: url('paper-texture.jpg'); /* Replace with your paper texture */
-        background-size: cover;
-        padding: 80px; /* Increased padding for larger paper */
-        border-radius: 12px; /* More rounded corners */
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* Stronger shadow */
-        position: relative;
-        overflow: hidden;
-        width: 80%; /* Increased paper width */
-        max-width: 800px; /* Maximum width of the paper */
-        margin: auto; /* Center the paper on the page */
-      }
-
-      .bouquet {
-        /* Removed absolute positioning, will use flexbox for layout */
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center; /* Center flowers horizontally */
-        align-items: center;      /* Center flowers vertically */
-        width: 100%; /* Bouquet takes full width of paper */
-        margin-top: 20px; /* Add space between top of paper and bouquet */
-      }
-
-      .flower {
-        cursor: pointer;
-        margin: 15px; /* Increased margin between flowers */
-        transition: transform 0.3s ease-in-out;
-      }
-
-      .flower:hover {
-        transform: scale(1.1);
-      }
-
-      .flower img {
-        width: 120px; /* Increased flower size */
-        height: auto;
-        display: block;
-      }
-
-      .tiktok-gui {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background-color: white;
-        padding: 30px; /* Increased padding for the GUI */
-        border-radius: 12px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); /* Stronger shadow */
-        z-index: 10;
-        display: none;
-        text-align: center;
-        width: 90%; /* Make the GUI wider */
-        max-width: 600px; /* But set a max width */
-      }
-
-      #closeGui {
-        position: absolute;
-        top: 15px;
-        right: 15px;
-        cursor: pointer;
-        background: none;
-        border: none;
-        font-size: 20px; /* Increased close button size */
-        color: #555;
-      }
-
-      #closeGui:hover {
-        color: #222;
-      }
-
-      #tiktokVideo {
-        margin-top: 20px; /* Increased margin for video */
-        width: 100%;  /* Make video take full width of GUI */
-        height: auto; /* Maintain aspect ratio */
-        aspect-ratio: 16 / 9; /* Ensure 16:9 ratio */
-      }
-
-      .paper::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        border: 3px dashed rgba(204, 204, 204, 0.7);
-        border-radius: 16px; /* Match paper radius */
-        z-index: -1;
-      }
-
-    </style>
 </head>
 <body>
     <div class="paper-container">
         <div class="paper">
             <div class="bouquet">
-                <div class="flower" data-tiktok-url="https://www.tiktok.com/@tiktok/video/7161229297624122666">
-                    <img src="https://images.unsplash.com/photo-1600107306231-649e1f144594?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Red Rose">
+                <div class="flower" data-tiktok-url="https://www.tiktok.com/@example/video1">
+                    <img src="flower1.png" alt="Flower 1">
                 </div>
-                <div class="flower" data-tiktok-url="https://www.tiktok.com/@tiktok/video/7158931535497332010">
-                    <img src="https://images.unsplash.com/photo-1591080491574-25517942c279?q=80&w=835&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Yellow Tulip">
+                <div class="flower" data-tiktok-url="https://www.tiktok.com/@example/video2">
+                    <img src="flower2.png" alt="Flower 2">
                 </div>
-                <div class="flower" data-tiktok-url="https://www.tiktok.com/@tiktok/video/7148788724152781098">
-                    <img src="https://images.unsplash.com/photo-1614707241103-7511e5a7461c?q=80&w=830&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Purple Orchid">
+                <div class="flower" data-tiktok-url="https://www.tiktok.com/@example/video3">
+                    <img src="flower3.png" alt="Flower 3">
                 </div>
-                <div class="flower" data-tiktok-url="https://www.tiktok.com/@tiktok/video/7172286417457787178">
-                    <img src="https://images.unsplash.com/photo-1624517454845-e967954599bc?q=80&w=835&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="White Lily">
                 </div>
-                <div class="flower" data-tiktok-url="https://www.tiktok.com/@tiktok/video/7165890712891965738">
-                    <img src="https://images.unsplash.com/photo-1589050557099-4c75949f5255?q=80&w=835&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Pink Carnation">
-                </div>
-            </div>
         </div>
         <div class="tiktok-gui" id="tiktokGui">
             <button id="closeGui">Close</button>
-            <iframe id="tiktokVideo"  frameborder="0" allow="autoplay; fullscreen"></iframe>
+            <iframe id="tiktokVideo" width="480" height="360" frameborder="0" allow="autoplay; fullscreen"></iframe>
         </div>
     </div>
 
-    <script>
-      document.addEventListener('DOMContentLoaded', () => {
-          const flowers = document.querySelectorAll('.flower');
-          const tiktokGui = document.getElementById('tiktokGui');
-          const tiktokVideoFrame = document.getElementById('tiktokVideo');
-          const closeGuiButton = document.getElementById('closeGui');
-          const bouquet = document.querySelector('.bouquet');
-
-          flowers.forEach((flower, index) => {
-              flower.addEventListener('click', () => {
-                  const tiktokUrl = flower.dataset.tiktokUrl;
-                  tiktokVideoFrame.src = tiktokUrl;
-                  tiktokGui.style.display = 'block';
-              });
-
-              // Example of setting a random rotation for a warped effect
-              const randomRotation = (Math.random() - 0.5) * 20; // +/- 10 degrees
-              flower.style.setProperty('--rotation', randomRotation);
-          });
-
-          closeGuiButton.addEventListener('click', () => {
-              tiktokGui.style.display = 'none';
-              tiktokVideoFrame.src = ''; // Clear the iframe source when closed
-          });
-
-          // More sophisticated warping (example - you might need to adjust)
-          if (bouquet) {
-              const numFlowers = flowers.length;
-              flowers.forEach((flower, index) => {
-                  const angle = (index / numFlowers) * 360;
-                  const radius = Math.random() * 80 + 80;
-
-                  const x = radius * Math.cos(angle * Math.PI / 180);
-                  const y = radius * Math.sin(angle * Math.PI / 180);
-
-                  flower.style.transform = `translate(${x}px, ${y}px) rotate(${flower.style.getPropertyValue('--rotation')})`;
-                  flower.style.position = 'absolute';
-              });
-              bouquet.style.width = 'auto';
-              bouquet.style.height = 'auto';
-          }
-      });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
