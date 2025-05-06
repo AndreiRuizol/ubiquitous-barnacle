@@ -1,4 +1,3 @@
-```javascript
 document.addEventListener('DOMContentLoaded', () => {
     const flowers = document.querySelectorAll('.flower');
     const tiktokGui = document.getElementById('tiktokGui');
