@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flower TikTok Reveal</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f8ff;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .flowers-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .flower-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            cursor: pointer;
+            margin: 0 auto;
+            transition: transform 0.3s ease;
+        }
+
+        .flower-container:hover {
+            transform: scale(1.05);
+        }
+
+        .flower {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transition: all 0.5s ease;
+        }
+
+        .petal {
+            position: absolute;
+            width: 40px;
+            height: 80px;
+            border-radius: 40px 40px 0 0;
+            transform-origin: bottom center;
+            transition: all 0.5s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .center {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            top: 75px;
+            left: 75px;
+            z-index: 10;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        .video-container {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            width: 325px;
+            min-height: 575px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+
+        /* Flower colors with gradients */
+        .flower-1 .petal { 
+            background: linear-gradient(to top, #ff69b4, #ffb6c1);
+        }
+        .flower-1 .center { 
+            background: radial-gradient(circle at center, #ffd700, #ffa500);
+        }
+
+        .flower-2 .petal { 
+            background: linear-gradient(to top, #87ceeb, #add8e6);
+        }
+        .flower-2 .center { 
+            background: radial-gradient(circle at center, #ffa500, #ff8c00);
+        }
+
+        .flower-3 .petal { 
+            background: linear-gradient(to top, #98fb98, #90ee90);
+        }
+        .flower-3 .center { 
+            background: radial-gradient(circle at center, #ff6347, #ff4500);
+        }
+
+        .flower-4 .petal { 
+            background: linear-gradient(to top, #da70d6, #ee82ee);
+        }
+        .flower-4 .center { 
+            background: radial-gradient(circle at center, #ffd700, #daa520);
+        }
+
+        /* Position petals in a circle */
+        .petal:nth-child(1) { transform: rotate(0deg) translateY(-30px); }
+        .petal:nth-child(2) { transform: rotate(45deg) translateY(-30px); }
+        .petal:nth-child(3) { transform: rotate(90deg) translateY(-30px); }
+        .petal:nth-child(4) { transform: rotate(135deg) translateY(-30px); }
+        .petal:nth-child(5) { transform: rotate(180deg) translateY(-30px); }
+        .petal:nth-child(6) { transform: rotate(225deg) translateY(-30px); }
+        .petal:nth-child(7) { transform: rotate(270deg) translateY(-30px); }
+        .petal:nth-child(8) { transform: rotate(315deg) translateY(-30px); }
+
+        /* Hover effects for petals */
+        .flower-container:hover .petal {
+            filter: brightness(1.1);
+            transform: rotate(var(--rot)) translateY(-35px) scale(1.05);
+        }
+
+        .flower-container:hover .center {
+            transform: scale(1.1);
+            filter: brightness(1.1);
+        }
+
+        /* Open state */
+        .flower.open .petal {
+            transform: rotate(var(--rot)) translateY(-70px) scale(1.2);
+            opacity: 0;
+        }
+
+        .flower.open .center {
+            transform: scale(0);
+        }
+
+        .flower-label {
+            text-align: center;
+            margin-top: 10px;
+            font-weight: bold;
+            color: #555;
+            text-shadow: 0 1px 1px rgba(255,255,255,0.8);
+            transition: all 0.3s ease;
+        }
+
+        .flower-container:hover + .flower-label {
+            color: #333;
+            transform: scale(1.05);
+        }
+
+        .video-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            background: rgba(0,0,0,0.5);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background: rgba(255,255,255,0.2);
+            transform: scale(1.1);
+        }
+
+        .loading-message {
+            padding: 20px;
+            text-align: center;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>Click a Flower Chirpy To Open A TikTok Video!!</h1>
+
+    <div class="flowers-grid">
+        <div>
+            <div class="flower-container" id="flowerContainer1">
+                <div class="flower flower-1" id="flower1">
+                    <div class="petal" style="--rot: 0deg;"></div>
+                    <div class="petal" style="--rot: 45deg;"></div>
+                    <div class="petal" style="--rot: 90deg;"></div>
+                    <div class="petal" style="--rot: 135deg;"></div>
+                    <div class="petal" style="--rot: 180deg;"></div>
+                    <div class="petal" style="--rot: 225deg;"></div>
+                    <div class="petal" style="--rot: 270deg;"></div>
+                    <div class="petal" style="--rot: 315deg;"></div>
+                    <div class="center"></div>
+                </div>
+            </div>
+            <div class="flower-label">Pink Flower</div>
+        </div>
+
+        <div>
+            <div class="flower-container" id="flowerContainer2">
+                <div class="flower flower-2" id="flower2">
+                    <div class="petal" style="--rot: 0deg;"></div>
+                    <div class="petal" style="--rot: 45deg;"></div>
+                    <div class="petal" style="--rot: 90deg;"></div>
+                    <div class="petal" style="--rot: 135deg;"></div>
+                    <div class="petal" style="--rot: 180deg;"></div>
+                    <div class="petal" style="--rot: 225deg;"></div>
+                    <div class="petal" style="--rot: 270deg;"></div>
+                    <div class="petal" style="--rot: 315deg;"></div>
+                    <div class="center"></div>
+                </div>
+            </div>
+            <div class="flower-label">Blue Flower</div>
+        </div>
+
+        <div>
+            <div class="flower-container" id="flowerContainer3">
+                <div class="flower flower-3" id="flower3">
+                    <div class="petal" style="--rot: 0deg;"></div>
+                    <div class="petal" style="--rot: 45deg;"></div>
+                    <div class="petal" style="--rot: 90deg;"></div>
+                    <div class="petal" style="--rot: 135deg;"></div>
+                    <div class="petal" style="--rot: 180deg;"></div>
+                    <div class="petal" style="--rot: 225deg;"></div>
+                    <div class="petal" style="--rot: 270deg;"></div>
+                    <div class="petal" style="--rot: 315deg;"></div>
+                    <div class="center"></div>
+                </div>
+            </div>
+            <div class="flower-label">Green Flower</div>
+        </div>
+
+        <div>
+            <div class="flower-container" id="flowerContainer4">
+                <div class="flower flower-4" id="flower4">
+                    <div class="petal" style="--rot: 0deg;"></div>
+                    <div class="petal" style="--rot: 45deg;"></div>
+                    <div class="petal" style="--rot: 90deg;"></div>
+                    <div class="petal" style="--rot: 135deg;"></div>
+                    <div class="petal" style="--rot: 180deg;"></div>
+                    <div class="petal" style="--rot: 225deg;"></div>
+                    <div class="petal" style="--rot: 270deg;"></div>
+                    <div class="petal" style="--rot: 315deg;"></div>
+                    <div class="center"></div>
+                </div>
+            </div>
+            <div class="flower-label">Purple Flower</div>
+        </div>
+    </div>
+
+    <div class="video-wrapper" id="videoWrapper">
+        <div class="close-btn" id="closeBtn">×</div>
+        <div class="video-container" id="videoContainer">
+            <div class="loading-message">Loading TikTok...</div>
+        </div>
+    </div>
+
+    <script>
+        // TikTok video IDs for each flower
+        const tiktokVideos = {
+            1: "7483028906442853639", // @princelyricss
+            2: "7466039161670110471", // @kirk_liriko
+            3: "7484198480454405431", // @hmmmzyxi
+            4: "7451760361700723990"  // @topicallsolution
+        };
+
+        const videoWrapper = document.getElementById('videoWrapper');
+        const videoContainer = document.getElementById('videoContainer');
+        const closeBtn = document.getElementById('closeBtn');
+
+        // Current active video
+        let currentVideoId = null;
+        let tiktokScriptLoaded = false;
+
+        // Function to load TikTok embed script
+        function loadTikTokEmbed() {
+            return new Promise((resolve) => {
+                if (tiktokScriptLoaded) {
+                    resolve();
+                    return;
+                }
+                
+                const script = document.createElement('script');
+                script.src = "https://www.tiktok.com/embed.js";
+                script.onload = () => {
+                    tiktokScriptLoaded = true;
+                    resolve();
+                };
+                document.body.appendChild(script);
+            });
+        }
+
+        // Function to create TikTok iframe
+        function createTikTokIframe(videoId) {
+            const iframe = document.createElement('iframe');
+            iframe.src = `https://www.tiktok.com/embed/v2/${videoId}`;
+            iframe.width = "100%";
+            iframe.height = "575";
+            iframe.frameBorder = "0";
+            iframe.allowFullscreen = true;
+            iframe.allow = "autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share";
+            return iframe;
+        }
+
+        // Set up click handlers for each flower
+        for (let i = 1; i <= 4; i++) {
+            const flower = document.getElementById(`flower${i}`);
+            const flowerContainer = document.getElementById(`flowerContainer${i}`);
+
+            flowerContainer.addEventListener('click', async function() {
+                // Reset all flowers first
+                for (let j = 1; j <= 4; j++) {
+                    document.getElementById(`flower${j}`).classList.remove('open');
+                }
+                
+                // Open the clicked flower
+                flower.classList.add('open');
+                
+                // Show loading state
+                videoContainer.innerHTML = '<div class="loading-message">Loading TikTok...</div>';
+                videoWrapper.style.display = 'flex';
+                
+                const videoId = tiktokVideos[i];
+                
+                try {
+                    // Only reload if it's a different video
+                    if (currentVideoId !== videoId) {
+                        // Load TikTok embed script if needed
+                        await loadTikTokEmbed();
+                        
+                        // Create new iframe
+                        videoContainer.innerHTML = '';
+                        const iframe = createTikTokIframe(videoId);
+                        videoContainer.appendChild(iframe);
+                        
+                        currentVideoId = videoId;
+                    }
+                } catch (error) {
+                    videoContainer.innerHTML = '<div class="loading-message" style="color: red;">Error loading TikTok video</div>';
+                    console.error('Error loading TikTok embed:', error);
+                }
+            });
+        }
+
+        // Close button handler
+        closeBtn.addEventListener('click', function() {
+            videoWrapper.style.display = 'none';
+            
+            // Reset all flowers
+            for (let i = 1; i <= 4; i++) {
+                document.getElementById(`flower${i}`).classList.remove('open');
+            }
+        });
+
+        // Prevent clicks on the video container from closing the wrapper
+        videoContainer.addEventListener('click', function(event) {
+            event.stopPropagation();
+        });
+
+        // Allow clicking outside the video container to close the wrapper
+        videoWrapper.addEventListener('click', function() {
+            videoWrapper.style.display = 'none';
+            for (let i = 1; i <= 4; i++) {
+                document.getElementById(`flower${i}`).classList.remove('open');
+            }
+        });
+    </script>
+</body>
+</html>
